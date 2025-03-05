@@ -1,6 +1,7 @@
 .{
-    .name = "amqp",
+    .name = .amqp,
     .version = "0.0.0",
+    .fingerprint = 0x84f02e825101cf63,
 
     .dependencies = .{},
 
