@@ -2,6 +2,7 @@ pub const Connection = @import("connection.zig").Connection;
 pub const Queue = @import("queue.zig").Queue;
 pub const Basic = @import("basic.zig").Basic;
 pub const Table = @import("table.zig").Table;
+pub const proto = @import("protocol.zig");
 pub const init = @import("connection.zig").Connection.init;
 
 const testing = @import("std").testing;
