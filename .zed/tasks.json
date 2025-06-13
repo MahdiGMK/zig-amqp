@@ -1,0 +1,50 @@
+// Static tasks configuration.
+//
+// Example:
+[
+  {
+    "label": "PWD",
+    "command": "pwd",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "center",
+    "hide": "never",
+    "shell": {
+      "program": "sh"
+    },
+    // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
+    "tags": [],
+    "cwd": "examples/simple_publish"
+  },
+  {
+    "label": "Run Simple Publish",
+    "command": "zig build run -freference-trace",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "center",
+    "hide": "never",
+    "shell": {
+      "program": "sh"
+    },
+    // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
+    "tags": [],
+    "cwd": "examples/simple_publish"
+  },
+  {
+    "label": "Uscope",
+    "command": "uscope",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "show_command": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": {
+      "program": "sh"
+    },
+    // Represents the tags for inline runnable indicators, or spawning multiple tasks at once.
+    "tags": []
+  }
+]

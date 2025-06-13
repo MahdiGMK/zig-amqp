@@ -1,5 +1,4 @@
 const std = @import("std");
-const posix = std.posix;
 const proto = @import("protocol.zig");
 const wire = @import("wire.zig");
 const Header = @import("wire.zig").Header;
@@ -14,24 +13,24 @@ pub const Connector = struct {
     //       need to store a pointer to the Connection
     rx_buffer: WireBuffer = undefined,
     tx_buffer: WireBuffer = undefined,
-    connection: *Connection = undefined,
+    connection: ?*Connection = null,
     channel: u16,
 
     pub fn sendHeader(connector: *Connector, size: u64, class: u16) !void {
         connector.tx_buffer.writeHeader(connector.channel, size, class);
-        _ = try posix.write(connector.file.handle, connector.tx_buffer.extent());
+        _ = try connector.file.write(connector.tx_buffer.extent());
         connector.tx_buffer.reset();
     }
 
     pub fn sendBody(connector: *Connector, body: []const u8) !void {
         connector.tx_buffer.writeBody(connector.channel, body);
-        _ = try posix.write(connector.file.handle, connector.tx_buffer.extent());
+        _ = try connector.file.write(connector.tx_buffer.extent());
         connector.tx_buffer.reset();
     }
 
     pub fn sendHeartbeat(connector: *Connector) !void {
         connector.tx_buffer.writeHeartbeat();
-        _ = try posix.write(connector.file.handle, connector.tx_buffer.extent());
+        _ = try connector.file.write(connector.tx_buffer.extent());
         connector.tx_buffer.reset();
         std.log.debug("Heartbeat ->", .{});
     }
@@ -40,7 +39,7 @@ pub const Connector = struct {
         while (true) {
             if (!connector.rx_buffer.frameReady()) {
                 // TODO: do we need to retry read (if n isn't as high as we expect)?
-                const n = try posix.read(connector.file.handle, connector.rx_buffer.remaining());
+                const n = try connector.file.read(connector.rx_buffer.remaining());
                 connector.rx_buffer.incrementEnd(n);
                 if (connector.rx_buffer.isFull()) connector.rx_buffer.shift();
                 continue;
@@ -82,7 +81,7 @@ pub const Connector = struct {
         while (true) {
             if (!connector.rx_buffer.frameReady()) {
                 // TODO: do we need to retry read (if n isn't as high as we expect)?
-                const n = try posix.read(connector.file.handle, connector.rx_buffer.remaining());
+                const n = try connector.file.read(connector.rx_buffer.remaining());
                 connector.rx_buffer.incrementEnd(n);
                 if (connector.rx_buffer.isFull()) connector.rx_buffer.shift();
                 continue;
@@ -124,7 +123,7 @@ pub const Connector = struct {
         while (true) {
             if (!connector.rx_buffer.frameReady()) {
                 // TODO: do we need to retry read (if n isn't as high as we expect)?
-                const n = try posix.read(connector.file.handle, connector.rx_buffer.remaining());
+                const n = try connector.file.read(connector.rx_buffer.remaining());
                 connector.rx_buffer.incrementEnd(n);
                 if (connector.rx_buffer.isFull()) connector.rx_buffer.shift();
                 continue;

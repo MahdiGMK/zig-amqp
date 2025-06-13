@@ -12,8 +12,8 @@ pub fn main() !void {
     var ch = try conn.channel();
     _ = try ch.queueDeclare("simple_publish", .{}, null);
 
-    var i: usize = 0;
-    while (i < 10_000) : (i += 1) {
+    for (0..4) |_| {
         try ch.basicPublish("", "simple_publish", "AAAABBBB", .{});
     }
+    std.debug.print("done\n", .{});
 }

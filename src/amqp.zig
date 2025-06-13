@@ -3,6 +3,7 @@ pub const Queue = @import("queue.zig").Queue;
 pub const Basic = @import("basic.zig").Basic;
 pub const Table = @import("table.zig").Table;
 pub const proto = @import("protocol.zig");
+pub const Connector = @import("connector.zig").Connector;
 pub const init = @import("connection.zig").Connection.init;
 
 const testing = @import("std").testing;
